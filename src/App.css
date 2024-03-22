@@ -1,38 +1,21 @@
-.App {
-  text-align: center;
+@font-face {
+  font-family: "Pitch-Regular";
+  src: url("https://db.onlinewebfonts.com/t/369c277b77f7dd78a7385446bc047a18.eot");
+  src: url("https://db.onlinewebfonts.com/t/369c277b77f7dd78a7385446bc047a18.eot?#iefix")format("embedded-opentype"),
+  url("https://db.onlinewebfonts.com/t/369c277b77f7dd78a7385446bc047a18.woff2")format("woff2"),
+  url("https://db.onlinewebfonts.com/t/369c277b77f7dd78a7385446bc047a18.woff")format("woff"),
+  url("https://db.onlinewebfonts.com/t/369c277b77f7dd78a7385446bc047a18.ttf")format("truetype"),
+  url("https://db.onlinewebfonts.com/t/369c277b77f7dd78a7385446bc047a18.svg#Pitch-Regular")format("svg");
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@font-face {
+  font-family: "Inter";
+  src: url("https://db.onlinewebfonts.com/t/1130e1ae4e4a76c7118c0b35c4b9d019.eot");
+  src: url("https://db.onlinewebfonts.com/t/1130e1ae4e4a76c7118c0b35c4b9d019.eot?#iefix")format("embedded-opentype"),
+  url("https://db.onlinewebfonts.com/t/1130e1ae4e4a76c7118c0b35c4b9d019.woff2")format("woff2"),
+  url("https://db.onlinewebfonts.com/t/1130e1ae4e4a76c7118c0b35c4b9d019.woff")format("woff"),
+  url("https://db.onlinewebfonts.com/t/1130e1ae4e4a76c7118c0b35c4b9d019.ttf")format("truetype"),
+  url("https://db.onlinewebfonts.com/t/1130e1ae4e4a76c7118c0b35c4b9d019.svg#Inter")format("svg");
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

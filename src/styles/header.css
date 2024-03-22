@@ -1,0 +1,44 @@
+
+.header{
+  background-color: #3B412E;
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  padding: 10px;
+  color: #ffffff;
+}
+
+.left {
+  text-align: right;
+  padding-left: 5%;
+}
+  
+.middle {
+  text-align: center;
+  padding-left: 45%;
+  padding-right: 45%;  
+}
+  
+.logo {
+  border-radius: 50%;
+  color: #94493F;
+  font-family: 'Pitch-Regular';
+  background-color: #ECECEA;
+  margin: auto;
+}
+
+.right {
+  text-align: right;
+  padding-right: 1%;
+  font-family: 'Inter';
+
+}
+
+.signoutbutton {
+  background-color: #3B412E;
+  color: #ffffff;
+  font-family: 'Inter';
+  font-size: small;
+  border-style: none;
+  text-align: right;
+}
+  

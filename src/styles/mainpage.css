@@ -1,0 +1,23 @@
+h1 {
+    font-family: 'Pitch-Regular';
+    color: black;
+    text-align: center;
+}
+
+body {
+    background-color: #ECECEA;
+
+}
+
+button {
+    background-color: #94493F;
+    border-radius: 5px;
+    padding: 5px;
+    font-family: 'Pitch-Regular';
+    color: white;
+    border-style: inherit;
+    text-align: center;
+    display: block;
+    margin: auto;
+
+}
