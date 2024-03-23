@@ -12,6 +12,7 @@ import {withAuthenticator} from '@aws-amplify/ui-react';
 import SuccesPage from './SucessPage/SuccessPage';
 import MainPage from './MainPage/MainPage';
 import Camera from './camera/camera';
+import Form from './Form/Form';
 //create a context to hold the refs
 //export const CameraContext = createContext();
 // establishing all the webpages to display
@@ -35,6 +36,7 @@ function App() {
           <Route path="/" element={<MainPage/>}></Route>
           <Route path="/success" element={<SuccesPage/>}></Route>
           <Route path="/camera" element={<Camera/>}></Route>
+          <Route path="/form" element={<Form/>}></Route>
         </Routes>
       </Router>
     </ThemeProvider>

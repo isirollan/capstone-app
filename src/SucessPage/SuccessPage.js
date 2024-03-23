@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Header from '../Header/Header';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 const SuccesPage = () => {
 
@@ -20,6 +21,19 @@ const SuccesPage = () => {
         }
     };
 
+    //creating function to navigate to camera and home
+    const navigate = useNavigate();    
+    // when the user click the button, send it to camera page
+    const cameraClick = (e) => {
+        e.preventDefault();
+        navigate("/camera")
+    }
+    // when the user click the button, send it to  Main page
+    const homeClick = (e) => {
+        e.preventDefault();
+        navigate("/")
+    }
+
     //execute the function while the webpage is charging, to avoid re-rendering multiple times
     // we will execute once the page lode (adding the empty array [] )
     useEffect(() => {
@@ -38,8 +52,8 @@ const SuccesPage = () => {
             </div>
            
             <div>
-                <button>Another Picture</button>
-                <button>Return to Home</button>
+                <button onClick={cameraClick}>Another Picture</button>
+                <button onClick={homeClick}>Return to Home</button>
             </div>
         </>
 

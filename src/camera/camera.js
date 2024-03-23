@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef} from "react";
+import { useNavigate } from "react-router";
 import '../styles/camera.css';
 import Header from "../Header/Header";
 //import {  CameraContext } from '../App';
@@ -11,6 +12,14 @@ const Camera = () => {
 	const [hasPhoto, setHasPhoto] = useState(false); 
 	const videoRef = useRef(null);
 	const photoRef = useRef(null);
+	//creating function to navigate to camera
+	const formNavigate = useNavigate();    
+	// when the user click the button, send it to camera page
+	const formClick = (e) => {
+        e.preventDefault();
+        formNavigate("/form")
+    }
+
 
 	const getVideo = () => {
 		navigator.mediaDevices
@@ -61,6 +70,7 @@ const Camera = () => {
 		ctx.clearRect(0, 0, photo.width, photo.height);
 
 		setHasPhoto(false);	
+		//FormClick();
 	}
 
 	// useEffect(() => {
@@ -99,7 +109,7 @@ const Camera = () => {
 				<div className={'result ' + (hasPhoto ? 'hasPhoto'
 				: '')}>
 					<canvas ref={photoRef}></canvas>
-					<button className="snap" onClick={closePhoto}>CLOSE!</button>
+					<button className="snap" onClick={formClick}>Send</button>
 				</div>
 			</div>
 		</>
