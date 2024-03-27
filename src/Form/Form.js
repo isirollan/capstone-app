@@ -1,35 +1,72 @@
-import React from 'react';
-import Header from '../Header/Header';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function Form () {
+function Form() {
+  const [fabric, setFabric] = useState({ name: "", composition: [] });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editComposition, setEditComposition] = useState([]);
 
-    //creating function to navigate to camera
-    const successNavigate = useNavigate();    
-    // when the user click the button, send it to success page (missing: + calling API)
-    const successClick = (e) => {
-        e.preventDefault();
-        successNavigate("/success")
-    }
-            
+  useEffect(() => {
+    // Initial fetch of fabric data
+    axios.get('http://localhost:3000/fabric')
+      .then(res => {
+        setFabric(res.data);
+        setEditComposition(res.data.composition); // Initialize edit composition state
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
-    return (
+  const handleEditChange = (index, event) => {
+    const newEditComposition = [...editComposition];
+    newEditComposition[index].percentage = event.target.value;
+    setEditComposition(newEditComposition);
+  };
+
+  const saveEdits = () => {
+    // Here you would update the backend with the new composition
+    // For simplicity, we're just updating the front-end state
+    setFabric({ ...fabric, composition: editComposition });
+    setIsEditing(false);
+  };
+
+  const confirmComposition = () => {
+    // Placeholder for any action to confirm composition
+    // For example, displaying a message
+    alert('Composition confirmed!');
+  };
+
+  return (
+    <div>
+      <h1>Fabric Composition</h1>
+      <h2>{fabric.name}</h2>
+      {!isEditing ? (
         <>
-        <Header/>
-        <div>
-            <h2>Form</h2>
-        </div>
-        <div>
-            <ul>
-                Cotton
-            </ul>
-            <ul>
-                Polyester
-            </ul>
-        </div>
-        <button onClick={successClick}>Send!</button>
+          <ul>
+            {fabric.composition.map((item, index) => (
+              <li key={index}>{item.material}: {item.percentage}%</li>
+            ))}
+          </ul>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <button onClick={confirmComposition}>Confirm</button> {/* Confirm Button */}
         </>
-    )
+      ) : (
+        <>
+          {editComposition.map((item, index) => (
+            <div key={index}>
+              <input
+                type="number"
+                value={item.percentage}
+                onChange={(e) => handleEditChange(index, e)}
+              /> {item.material}
+            </div>
+          ))}
+          <button onClick={saveEdits}>Save Changes</button>
+        </>
+      )}
+    </div>
+  );
 }
 
 export default Form;
