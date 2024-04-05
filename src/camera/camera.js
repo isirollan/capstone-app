@@ -21,31 +21,29 @@ const Camera = () => {
     }
 
 
-	const getVideo = () => async() => {
-		try {
-			const constraints = {
-				video: {
-				//use back camera
-				facingMode: "environment",
-				width: {ideal:1920}, //ideal width
-				height: {ideal: 1080, aspectRatio: 16/9} // Set ideal height with aspect ratio
-				}
-			};
-
-			const stream = await navigator.mediaDevices.getUserMedia(constraints);
-			
-			let video = videoRef.current;
-			video.srcObject = stream;
-
-			video.onloadedmetadata = () => {
-				video.play();
-			};
 
 
-			} catch (err) {
-				console.error(err);
+	
+	const getVideo = () => {
+		const constraints = {
+			video: {
+				facingMode: { ideal: 'environment'} //prefer back camera
 			}
 		};
+
+		navigator.mediaDevices.getUserMedia(constraints).then (
+			stream => {
+				let video = videoRef.current;
+				video.srcObject = stream;
+				video.onloadedmetadata = () => {
+					video.play();
+				};	
+			})
+			.catch (err => {
+			console.error(err);
+		});
+	}
+	//THIS IS THE ORIGINAL THAT WAS WORKING ON PC
 	// 	navigator.mediaDevices
 	// 	  .getUserMedia({ 
 	// 		video: { width: 1920, height: 1080 } 
@@ -69,8 +67,10 @@ const Camera = () => {
 			let photo = photoRef.current;
 			let ctx = photo.getContext('2d');
 	
-			const displayWidth = photo.offsetWidth;
-			const displayHeight = displayWidth / (16/9);
+			//const displayWidth = photo.offsetWidth;
+			const displayWidth = window.innerWidth;
+			//const displayHeight = displayWidth / (16/9);
+			const displayHeight = window.innerHeight;
 			// const pixelRatio = window.devicePixelRatio || 1;
 	
 			photo.width = displayWidth;
@@ -87,14 +87,13 @@ const Camera = () => {
 
 
 	
-	const closePhoto = () => {
+	const retakePhoto = () => {
 		let photo = photoRef.current;
 		let ctx = photo.getContext('2d');
 
 		ctx.clearRect(0, 0, photo.width, photo.height);
 
 		setHasPhoto(false);	
-		//FormClick();
 	}
 
 	// useEffect(() => {
@@ -127,14 +126,13 @@ const Camera = () => {
 			<Header/>
 			<div className="App">
 				<div className="camera">
-					<video ref={videoRef}></video>
+					<video ref={videoRef} autoPlay playsInline></video>
 					<button className="snap" onClick={takePhoto}>Snap!</button>
 				</div>
 				<div className={'result ' + (hasPhoto ? 'hasPhoto'
 				: '')}>
 					<canvas ref={photoRef}></canvas>
 					<button className="snap" onClick={formClick}>Send</button>
-					<button className="snap" onCanPlay={closePhoto}>Retake</button>
 				</div>
 			</div>
 		</>
