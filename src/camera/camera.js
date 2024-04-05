@@ -21,24 +21,48 @@ const Camera = () => {
     }
 
 
-	const getVideo = () => {
-		navigator.mediaDevices
-		  .getUserMedia({ 
-			video: { width: 1920, height: 1080 } 
-		  })
-		  .then(stream => {
+	const getVideo = () => async() => {
+		try {
+			const constraints = {
+				video: {
+				//use back camera
+				facingMode: "environment",
+				width: {ideal:1920}, //ideal width
+				height: {ideal: 1080, aspectRatio: 16/9} // Set ideal height with aspect ratio
+				}
+			};
+
+			const stream = await navigator.mediaDevices.getUserMedia(constraints);
+			
 			let video = videoRef.current;
 			video.srcObject = stream;
-			
-			// Wait for the video's metadata to load before playing
+
 			video.onloadedmetadata = () => {
-			  video.play();
+				video.play();
 			};
-		  })
-		  .catch(err => {
-			console.error(err);
-		  });
-	  }
+
+
+			} catch (err) {
+				console.error(err);
+			}
+		};
+	// 	navigator.mediaDevices
+	// 	  .getUserMedia({ 
+	// 		video: { width: 1920, height: 1080 } 
+	// 	  })
+	// 	  .then(stream => {
+	// 		let video = videoRef.current;
+	// 		video.srcObject = stream;
+			
+	// 		// Wait for the video's metadata to load before playing
+	// 		video.onloadedmetadata = () => {
+	// 		  video.play();
+	// 		};
+	// 	  })
+	// 	  .catch(err => {
+	// 		console.error(err);
+	// 	  });
+	//   }
 	
 	const takePhoto = () => {
 			let video = videoRef.current;
@@ -104,12 +128,13 @@ const Camera = () => {
 			<div className="App">
 				<div className="camera">
 					<video ref={videoRef}></video>
-					<button className="snap" onClick={takePhoto}>SNAP!</button>
+					<button className="snap" onClick={takePhoto}>Snap!</button>
 				</div>
 				<div className={'result ' + (hasPhoto ? 'hasPhoto'
 				: '')}>
 					<canvas ref={photoRef}></canvas>
 					<button className="snap" onClick={formClick}>Send</button>
+					<button className="snap" onCanPlay={closePhoto}>Retake</button>
 				</div>
 			</div>
 		</>
