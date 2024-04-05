@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router";
 
 function Form() {
   const [fabric, setFabric] = useState({ name: "", composition: [] });
   const [isEditing, setIsEditing] = useState(false);
   const [editComposition, setEditComposition] = useState([]);
+  const successNavigate = useNavigate();
 
   useEffect(() => {
     // Initial fetch of fabric data
@@ -34,7 +36,7 @@ function Form() {
   const confirmComposition = () => {
     // Placeholder for any action to confirm composition
     // For example, displaying a message
-    alert('Composition confirmed!');
+    successNavigate('/success');
   };
 
   return (

@@ -6,24 +6,36 @@ import Header from "../Header/Header";
 // Changed from function Camera()
 const Camera = () => {
 
-	//const { hasPhoto, setHasPhoto, videoRef, photoRef } = useContext(CameraContext);
+
 	
 	//local states
 	const [hasPhoto, setHasPhoto] = useState(false); 
+	const [photoBlob, setPhotoBlob] = useState(null); // State to store the photo blob
 	const videoRef = useRef(null);
 	const photoRef = useRef(null);
 	//creating function to navigate to camera
 	const formNavigate = useNavigate();    
-	// when the user click the button, send it to camera page
-	const formClick = (e) => {
-        e.preventDefault();
-        formNavigate("/form")
-    }
 
 
-
-
+	//Call API with photo
+	const sendPhotoToAPI = (blob) => {
+		// Construct form data to send the blob to the API
+		const formData = new FormData();
+		formData.append('photo', blob, 'photo.jpg');
 	
+		// Example: Sending the blob using fetch
+		fetch('https://urvi39b5u9.execute-api.us-east-1.amazonaws.com/test', {
+			method: 'POST',
+			body: formData
+		})
+		.then(response => {
+			// Handle response
+		})
+		.catch(error => {
+			console.error('Error sending photo:', error);
+		});
+	}
+	//Open the camera
 	const getVideo = () => {
 		const constraints = {
 			video: {
@@ -61,16 +73,17 @@ const Camera = () => {
 	// 		console.error(err);
 	// 	  });
 	//   }
-	
+	// Take photo
 	const takePhoto = () => {
 			let video = videoRef.current;
 			let photo = photoRef.current;
 			let ctx = photo.getContext('2d');
+
 	
 			//const displayWidth = photo.offsetWidth;
-			const displayWidth = window.innerWidth;
+			const displayWidth =   video.videoWidth*2 //this increases the quality
 			//const displayHeight = displayWidth / (16/9);
-			const displayHeight = window.innerHeight;
+			const displayHeight = video.videoHeight*2 // //this increases the quality
 			// const pixelRatio = window.devicePixelRatio || 1;
 	
 			photo.width = displayWidth;
@@ -81,6 +94,12 @@ const Camera = () => {
 			// ctx.scale(pixelRatio, pixelRatio);
 			ctx.drawImage(video, 0, 0, photo.width, photo.height);
 			setHasPhoto(true);
+
+			//Convert the canvas content to a blob
+			photo.toBlob((blob) => {
+				// Set the Photob blob in state
+				setPhotoBlob(blob);
+			});
 
 		}
 
@@ -94,6 +113,20 @@ const Camera = () => {
 		ctx.clearRect(0, 0, photo.width, photo.height);
 
 		setHasPhoto(false);	
+	}
+
+		// when the user click the button, send it to camera page and send the blob
+	const formClick = () => {
+		// Check if a photo has been taken before sending
+		if (hasPhoto && photoBlob) {
+			// Call the function to send the photo blob to the API
+			sendPhotoToAPI(photoBlob);
+			// Navigate to the form page
+			formNavigate("/form");
+		} else {
+			// Notify the user to take a photo before sending
+			alert("Please take a photo before sending.");
+		}
 	}
 
 	// useEffect(() => {
@@ -129,10 +162,10 @@ const Camera = () => {
 					<video ref={videoRef} autoPlay playsInline></video>
 					<button className="snap" onClick={takePhoto}>Snap!</button>
 				</div>
-				<div className={'result ' + (hasPhoto ? 'hasPhoto'
-				: '')}>
+				<div className={'result ' + (hasPhoto ? 'hasPhoto' : '')}>
 					<canvas ref={photoRef}></canvas>
-					<button className="snap" onClick={formClick}>Send</button>
+						<button className="snap" onClick={formClick}>Send</button>
+						<button className= "snap" onClick={retakePhoto}>Retake</button>
 				</div>
 			</div>
 		</>

@@ -2,14 +2,14 @@
     margin: 0; 
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Fira Sans', sans-serif;
+    font-family: 'Pitch-Regular';
   
   }
   
   .App {
     min-height: 100vh;
     position: relative;
-    background-color: #313131;
+    background-color: #ECECEA;;
   }
   
   .camera {
@@ -17,14 +17,18 @@
   }
   
   .result {
+    /* position: fixed; */
+    position: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     position: fixed;
     top: 0;
     left: 100%;
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: #ECECEA;;
     transition: 0.4s;
   }
   
@@ -39,16 +43,19 @@
   }
   
   button.snap {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
+      position: relative;
+      display: block;
+      /* bottom: 20px;
+      left: 20px; */
   
       appearance: none;
       border: none;
       outline: none;
-  
+
       padding: 8px 16px;
-      background-image: linear-gradient(to right, #844FFF 50%, #F44F84 50%);
+      /* background-image: linear-gradient(to right, #844FFF 50%, #F44F84 50%); */
+      background-color: #94493F ;
+      border-radius: 5px;
       background-position: 0%;
       background-size: 200%;
       color: #FFF;
@@ -62,6 +69,19 @@
       background-position: 100%;
   
   }
+/* 
+  button.snap:first-child {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+  }
+
+  button.snap:last-child {
+    position: absolute;
+    bottom: 20px;
+    left: 20px; 
+
+  } */
   
   canvas {
       width: 100%;
