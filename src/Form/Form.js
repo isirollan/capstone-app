@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Header from '../Header/Header';
 import axios from 'axios';
+import { apiContext } from '../App';
 import { useNavigate } from "react-router";
+
 
 function Form() {
   const [fabric, setFabric] = useState({ name: "", composition: [] });
   const [isEditing, setIsEditing] = useState(false);
   const [editComposition, setEditComposition] = useState([]);
   const successNavigate = useNavigate();
+  const {setsavefabricResponse} = useContext(apiContext); // will save the answer of the second API to navigate to the next 
 
   useEffect(() => {
     axios.get('http://localhost:3000/fabric')
@@ -34,20 +37,41 @@ function Form() {
     setIsEditing(false);
   };
 
-  const confirmComposition = () => {
-    axios.post('http://localhost:3000/confirm-fabric', fabric)
-      .then(response => {
-        console.log("Response:", response.data);
-        successNavigate('/success');
-      })
-      .catch(error => {
-        console.error("Error posting data:", error);
-      });
+  const confirmComposition = async() => {
+    try { 
+      const response = await axios.post('http://localhost:3000/confirm-fabric', fabric);
+      setsavefabricResponse(response.data);
+      successNavigate('/success');
+
+    } catch (error) {
+      console.error("Error posting data:", error);
+    }
+    // axios.post('http://localhost:3000/confirm-fabric', fabric)
+    //   .then(response => {
+    //     console.log("Response:", response.data);
+    //     successNavigate('/success');
+    //   })
+    //   .catch(error => {
+    //     console.error("Error posting data:", error);
+    //   });
   };
+
+
   // const confirmComposition = () => {
   //   // Placeholder for any action to confirm composition
   //   // For example, displaying a message
   //   successNavigate('/success');
+  // };
+
+  //with AWS API
+  // const confirmComposition = async () => {
+  //   try {
+  //       const response = await axios.post('https://x38r81hlgi.execute-api.us-east-1.amazonaws.com/test_confirm_composition', fabric);
+  //       setsavefabricResponse(response.data);
+  //       successNavigate('/success');
+  //   } catch (error) {
+  //       console.error('Error posting data:', error);
+  //   }
   // };
 
   return (

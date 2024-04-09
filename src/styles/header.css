@@ -2,7 +2,7 @@
 .header{
   background-color: #3B412E;
   display: grid;
-  grid-template-columns: 20% 60% 20%;
+  grid-template-columns: 20% 55% 25%;
   padding: 10px;
   color: #ffffff;
 }
@@ -10,12 +10,14 @@
 .left {
   text-align: right;
   padding-left: 5%;
+  background-color: #3B412E;
 }
   
 .middle {
   text-align: center;
   padding-left: 45%;
-  padding-right: 45%;  
+  padding-right: 45%; 
+  background-color: #3B412E;
 }
   
 .logo {
@@ -23,20 +25,19 @@
   color: #94493F;
   font-family: 'Pitch-Regular';
   background-color: #ECECEA;
-  margin: auto;
+  padding: 5px, 2px, 2px, 5px;
 }
 
 .right {
   text-align: right;
   padding-right: 1%;
-  font-family: 'Inter';
-
+  background-color: #3B412E;
 }
 
 .signoutbutton {
   background-color: #3B412E;
   color: #ffffff;
-  font-family: 'Inter';
+  font-family: 'Pitch-Regular';
   font-size: small;
   border-style: none;
   text-align: right;

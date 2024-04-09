@@ -1,6 +1,6 @@
 
 import './App.css';
-import React from 'react'; 
+import React, {createContext, useState} from 'react'; 
 //this will mean that we can create styles simply, without having css files for each component :)
 import { ThemeProvider, createTheme} from '@mui/material/styles'; 
 //reset the CSS so it looks the same in all browsers
@@ -18,6 +18,8 @@ import Form from './Form/Form';
 // establishing all the webpages to display
 
 //defining the theme (dark, light or custom)
+export const apiContext = createContext();
+
 const theme = createTheme({
   palette: {
     mode: 'light'
@@ -28,18 +30,27 @@ const theme = createTheme({
 
 function App() {
 
+  const [savefabricResponse, setsavefabricResponse] = useState('');
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline/> 
-      <Router>
-        <Routes>
-          <Route path="/" element={<MainPage/>}></Route>
-          <Route path="/success" element={<SuccesPage/>}></Route>
-          <Route path="/camera" element={<Camera/>}></Route>
-          <Route path="/form" element={<Form/>}></Route>
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <>
+    <apiContext.Provider value = {{savefabricResponse, setsavefabricResponse}}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/> 
+        <Router>
+          <Routes>
+            <Route path="/" element={<MainPage/>}></Route>
+            <Route path="/success" element={<SuccesPage/>}></Route>
+            <Route path="/camera" element={<Camera/>}></Route>
+            <Route path="/form" element={<Form/>}></Route>
+          </Routes>
+        </Router>
+      </ThemeProvider>
+
+    </apiContext.Provider>
+
+    </>
+
 
 
   );

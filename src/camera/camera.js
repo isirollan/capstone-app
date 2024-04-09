@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef} from "react";
 import { useNavigate } from "react-router";
 import '../styles/camera.css';
 import Header from "../Header/Header";
+import axios from 'axios';
 //import {  CameraContext } from '../App';
 // Changed from function Camera()
 const Camera = () => {
@@ -24,12 +25,9 @@ const Camera = () => {
 		formData.append('photo', blob, 'photo.jpg');
 	
 		// Example: Sending the blob using fetch
-		fetch('https://urvi39b5u9.execute-api.us-east-1.amazonaws.com/test', {
-			method: 'POST',
-			body: formData
-		})
+		axios.post('https://urvi39b5u9.execute-api.us-east-1.amazonaws.com/test', formData)
 		.then(response => {
-			// Handle response
+			console.log('Response: ', response.data)
 		})
 		.catch(error => {
 			console.error('Error sending photo:', error);
@@ -157,6 +155,7 @@ const Camera = () => {
 	return (
 		<>
 			<Header/>
+			<h2>Rotate your phone to take a picture</h2>
 			<div className="App">
 				<div className="camera">
 					<video ref={videoRef} autoPlay playsInline></video>
