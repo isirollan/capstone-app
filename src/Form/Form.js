@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import axios from 'axios';
 import { apiContext } from '../App';
 import { useNavigate } from "react-router";
+// import amplifyconfiguration from "../amplifyconfiguration.json";
 
 
 function Form() {
@@ -37,6 +38,7 @@ function Form() {
     setIsEditing(false);
   };
 
+  //with LOCAL API
   const confirmComposition = async() => {
     try { 
       const response = await axios.post('http://localhost:3000/confirm-fabric', fabric);
@@ -46,14 +48,6 @@ function Form() {
     } catch (error) {
       console.error("Error posting data:", error);
     }
-    // axios.post('http://localhost:3000/confirm-fabric', fabric)
-    //   .then(response => {
-    //     console.log("Response:", response.data);
-    //     successNavigate('/success');
-    //   })
-    //   .catch(error => {
-    //     console.error("Error posting data:", error);
-    //   });
   };
 
 
@@ -65,14 +59,20 @@ function Form() {
 
   //with AWS API
   // const confirmComposition = async () => {
+  //   const saveEndpoint = amplifyconfiguration.AWS_REST_ENDPOINT + "/test_confirm_composition"
+    
   //   try {
-  //       const response = await axios.post('https://x38r81hlgi.execute-api.us-east-1.amazonaws.com/test_confirm_composition', fabric);
+  //       const response = await axios.post(saveEndpoint, fabric);
   //       setsavefabricResponse(response.data);
   //       successNavigate('/success');
   //   } catch (error) {
   //       console.error('Error posting data:', error);
   //   }
   // };
+
+  // useEffect(() => {
+  //   confirmComposition()
+  // }, []) //with this empty array, this will execute once
 
   return (
     <div>
@@ -95,11 +95,12 @@ function Form() {
             <>
               {editComposition.map((item, index) => (
                 <div key={index}>
+                  <p> {item.material}</p>
                   <input
                     type="number"
                     value={item.percentage}
                     onChange={(e) => handleEditChange(index, e)}
-                  /> {item.material}
+                  />
                 </div>
               ))}
               <button onClick={saveEdits}>Save Changes</button>

@@ -8,7 +8,6 @@ import {CssBaseline} from '@mui/material';
 // This will help us naviagte different pages of our webpage
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import {withAuthenticator} from '@aws-amplify/ui-react';
-//import Camera from './camera/camera';
 import SuccesPage from './SucessPage/SuccessPage';
 import MainPage from './MainPage/MainPage';
 import Camera from './camera/camera';
@@ -30,7 +29,7 @@ const theme = createTheme({
 
 function App() {
 
-  const [savefabricResponse, setsavefabricResponse] = useState('');
+  const [savefabricResponse, setsavefabricResponse] = useState([]);
 
   return (
     <>

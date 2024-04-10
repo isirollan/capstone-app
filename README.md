@@ -1,3 +1,15 @@
+# Refiberd Tag Reader
+
+## To run this in your local computer
+
+Once you are in the correct folder (capstone-app2), run `npm start`
+
+- If you want to run it with the local API to try the experience
+1. Open a separate terminal, and open fabric-api folder
+2. Run `node server.js` on the terminal
+3. In another terminal in capstone-app2 folder, `run npm start`
+4. Answer `Y`to the question.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

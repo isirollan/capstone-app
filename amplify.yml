@@ -20,3 +20,11 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
+# this is the part that needs to be configure with AWS
+# provider:
+#   name: aws
+#   runtime: nodejs14.x
+#   stage: dev
+#   region: us-west-2
+#   httpApi:
+#     cors: true
