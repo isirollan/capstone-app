@@ -8,13 +8,12 @@ const port = 3000;
 
 // Define the JSON data
 const fabricData = {
-  name: "Sample Fabric",
-  composition: [
-    { material: "Cotton", percentage: 90 },
-    { material: "Nylon", percentage: 5 },
-    { material: "Viscose", percentage: 3 },
-    { material: "Spandex", percentage: 2 }
-  ]
+  "composition": {
+    "polyester": 30,
+    "elastane": 10,
+    "rayon": 60
+  },
+  "sample_id": "6508"
 };
 
 // // Root endpoint to guide users

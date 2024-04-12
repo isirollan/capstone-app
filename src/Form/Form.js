@@ -5,9 +5,12 @@ import { apiContext } from '../App';
 import { useNavigate } from "react-router";
 // import amplifyconfiguration from "../amplifyconfiguration.json";
 
+  // Enable CORS for all routes
 
 function Form() {
-  const [fabric, setFabric] = useState({ name: "", composition: [] });
+
+  //const [fabric, setFabric] = useState({ name: "", composition: [] });
+  const [fabric, setFabric] = useState({ composition: {}, sample_id: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [editComposition, setEditComposition] = useState([]);
   const successNavigate = useNavigate();
@@ -30,25 +33,34 @@ function Form() {
     newEditComposition[index].percentage = event.target.value;
     setEditComposition(newEditComposition);
   };
-
+  // //OLD VERSION (with local API)
+  // const saveEdits = () => {
+  //   // Here you would update the backend with the new composition
+  //   // For simplicity, we're just updating the front-end state
+  //   setFabric({ ...fabric, composition: editComposition });
+  //   setIsEditing(false);
+  //};
   const saveEdits = () => {
-    // Here you would update the backend with the new composition
-    // For simplicity, we're just updating the front-end state
-    setFabric({ ...fabric, composition: editComposition });
+    const newComposition = editComposition.reduce((acc, { material, percentage }) => {
+      acc[material] = percentage;
+      return acc;
+    }, {});
+    setFabric({ ...fabric, composition: newComposition });
     setIsEditing(false);
   };
 
-  //with LOCAL API
-  const confirmComposition = async() => {
-    try { 
-      const response = await axios.post('http://localhost:3000/confirm-fabric', fabric);
-      setsavefabricResponse(response.data);
-      successNavigate('/success');
 
-    } catch (error) {
-      console.error("Error posting data:", error);
-    }
-  };
+  //with LOCAL API
+  // const confirmComposition = async() => {
+  //   try { 
+  //     const response = await axios.post('http://localhost:3000/confirm-fabric', fabric);
+  //     setsavefabricResponse(response.data);
+  //     successNavigate('/success');
+
+  //   } catch (error) {
+  //     console.error("Error posting data:", error);
+  //   }
+  // };
 
 
   // const confirmComposition = () => {
@@ -58,17 +70,18 @@ function Form() {
   // };
 
   //with AWS API
-  // const confirmComposition = async () => {
-  //   const saveEndpoint = amplifyconfiguration.AWS_REST_ENDPOINT + "/test_confirm_composition"
+  const confirmComposition = async () => {
+    //const saveEndpoint = amplifyconfiguration.AWS_REST_ENDPOINT + "/dev"
     
-  //   try {
-  //       const response = await axios.post(saveEndpoint, fabric);
-  //       setsavefabricResponse(response.data);
-  //       successNavigate('/success');
-  //   } catch (error) {
-  //       console.error('Error posting data:', error);
-  //   }
-  // };
+    try {
+        const response = await axios.post('https://46bbjp6tnb.execute-api.us-east-1.amazonaws.com/prod', fabric);
+        setsavefabricResponse(response.data);
+        console.log(response.data)
+        successNavigate('/success');
+    } catch (error) {
+        console.error('Error posting data:', error);
+    }
+  };
 
   // useEffect(() => {
   //   confirmComposition()
@@ -80,12 +93,12 @@ function Form() {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
         <div>
           <h1>Fabric Composition</h1>
-          <h2>{fabric.name}</h2>
+          <h2>{fabric.sample_id}</h2>
           {!isEditing ? (
             <>
               <ul>
-                {fabric.composition.map((item, index) => (
-                  <li key={index}>{item.material}: {item.percentage}%</li>
+                {Object.entries(fabric.composition).map(([material, percentage], index) => (
+                  <li key={index}>{material}: {percentage}%</li>
                 ))}
               </ul>
               <button onClick={() => setIsEditing(true)}>Edit</button>
