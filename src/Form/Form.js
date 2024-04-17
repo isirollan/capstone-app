@@ -3,14 +3,13 @@ import Header from '../Header/Header';
 import axios from 'axios';
 import { apiContext } from '../App';
 import { useNavigate } from "react-router";
-// import amplifyconfiguration from "../amplifyconfiguration.json";
+//import amplifyconfiguration from "../amplifyconfiguration.json";
 
-  // Enable CORS for all routes
 
 function Form() {
 
   //const [fabric, setFabric] = useState({ name: "", composition: [] });
-  const [fabric, setFabric] = useState({ composition: {}, sample_id: "" });
+  const [fabric, setFabric] = useState({composition: {}, sample_id: ""});
   const [isEditing, setIsEditing] = useState(false);
   const [editComposition, setEditComposition] = useState([]);
   const successNavigate = useNavigate();
@@ -21,7 +20,13 @@ function Form() {
       .then(res => {
         console.log("Received data:", res.data);  // Log the fetched data
         setFabric(res.data);
-        setEditComposition(res.data.composition);
+        //Transform the object into an array for editing
+        const compositionArray = Object.entries(res.data.composition).map(([material, percentage]) => ({
+          material,
+          percentage
+        }));
+        //setEditComposition(res.data.composition);
+        setEditComposition(compositionArray);
       })
       .catch(err => {
         console.error("Error fetching data:", err);
@@ -74,14 +79,52 @@ function Form() {
     //const saveEndpoint = amplifyconfiguration.AWS_REST_ENDPOINT + "/dev"
     
     try {
-        const response = await axios.post('https://46bbjp6tnb.execute-api.us-east-1.amazonaws.com/prod', fabric);
+        const response = await axios.post('https://46bbjp6tnb.execute-api.us-east-1.amazonaws.com/dev', fabric, {
+          headers: {
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        }
+        });
         setsavefabricResponse(response.data);
-        console.log(response.data)
+        console.log('Successfully saved', response.data);
         successNavigate('/success');
     } catch (error) {
         console.error('Error posting data:', error);
     }
   };
+
+  // const confirmComposition = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       'https://46bbjp6tnb.execute-api.us-east-1.amazonaws.com/dev',
+  //       {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         mode: 'cors',
+  //         body: fabric
+  //       }
+  //     );
+  
+  //     // Parse the response body as JSON
+  //     const responseData = await response.json();
+  
+  //     // Save response data to state
+  //     setsavefabricResponse(responseData);
+  
+  //     // Log success message
+  //     console.log('Successfully saved:', responseData);
+  
+  //     // Navigate to success page
+  //     successNavigate('/success');
+  //   } catch (error) {
+  //     // Log error
+  //     console.error('Error posting data:', error);
+  //   }
+  // };
+  
 
   // useEffect(() => {
   //   confirmComposition()
