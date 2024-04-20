@@ -27,7 +27,6 @@ const SuccesPage = () => {
             <Header/>
             <h2>Success!</h2>
             <div>
-                <p>Label created successfully!</p>
                 <p>Write the ID if you haven't already</p>
                 <p>{savefabricResponse}</p>
             </div>

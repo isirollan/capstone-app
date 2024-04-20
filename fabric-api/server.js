@@ -11,9 +11,10 @@ const fabricData = {
   "composition": {
     "polyester": 30,
     "elastane": 10,
-    "rayon": 60
+    "rayon": 40,
+    "cotton": 20
   },
-  "sample_id": "6508"
+  "sample_id": "6509"
 };
 
 // // Root endpoint to guide users

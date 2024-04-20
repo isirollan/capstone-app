@@ -1,0 +1,10 @@
+{
+  "resourceName": "compositionDb",
+  "tableName": "SamplesComposition",
+  "partitionKey": {
+    "fieldName": "sample_id",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

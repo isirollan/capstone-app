@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/savefabric": {
+      "name": "/savefabric",
+      "lambdaFunction": "compositionFunction",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
