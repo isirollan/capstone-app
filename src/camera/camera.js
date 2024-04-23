@@ -5,6 +5,7 @@ import '../styles/camera.css';
 import Header from "../Header/Header";
 import axios from 'axios';
 import {  apiContext } from '../App';
+
 // Changed from function Camera()
 const Camera = () => {
 	//global state

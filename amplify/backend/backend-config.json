@@ -9,14 +9,6 @@
           ],
           "category": "function",
           "resourceName": "compositionFunction"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "photoFunction"
         }
       ],
       "providerPlugin": "awscloudformation",

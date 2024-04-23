@@ -7,13 +7,6 @@
       "permissions": {
         "setting": "open"
       }
-    },
-    "/sendphoto": {
-      "name": "/sendphoto",
-      "lambdaFunction": "photoFunction",
-      "permissions": {
-        "setting": "open"
-      }
     }
   }
 }
