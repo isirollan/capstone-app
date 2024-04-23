@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "compositionFunction"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "photoFunction"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -62,6 +70,11 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "photoFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -78,6 +91,22 @@
         {
           "category": "function",
           "resourceName": "compositionFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_photoFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "photoFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_photoFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "photoFunction"
         }
       ]
     }

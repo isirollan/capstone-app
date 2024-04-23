@@ -29,11 +29,12 @@ const theme = createTheme({
 
 function App() {
 
-  const [savefabricResponse, setsavefabricResponse] = useState([]);
+  const [savefabricResponse, setsavefabricResponse] = useState([])
+  const [modelResponse, setmodelResponse] = useState([]);
 
   return (
     <>
-    <apiContext.Provider value = {{savefabricResponse, setsavefabricResponse}}>
+    <apiContext.Provider value = {{savefabricResponse, setsavefabricResponse, modelResponse, setmodelResponse}}>
       <ThemeProvider theme={theme}>
         <CssBaseline/> 
         <Router>

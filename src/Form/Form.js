@@ -13,7 +13,7 @@ function Form() {
   const [editComposition, setEditComposition] = useState([]);
   const successNavigate = useNavigate();
   const [totalPercentage, setTotalPercentage] = useState(0); //default state of percentages
-  const {setsavefabricResponse} = useContext(apiContext); // will save the answer of the second API to navigate to the next 
+  const {modelResponse, setsavefabricResponse} = useContext(apiContext); // will save the answer of the second API to navigate to the next 
 
   useEffect(() => {
     axios.get('http://localhost:3000/fabric')
@@ -98,6 +98,9 @@ function Form() {
   return (
     <div>
         <Header/>
+        <div>
+          <h3>{modelResponse}</h3>
+        </div>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
             <div>
                 <h1>Fabric Composition</h1>
