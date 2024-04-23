@@ -19,10 +19,6 @@
         "compositionFunction": {
           "deploymentBucketName": "amplify-capstoneapp2-dev-122039-deployment",
           "s3Key": "amplify-builds/compositionFunction-2f673738666e6a65586b-build.zip"
-        },
-        "photoFunction": {
-          "deploymentBucketName": "amplify-capstoneapp2-dev-122039-deployment",
-          "s3Key": "amplify-builds/photoFunction-4e426256534f364e3138-build.zip"
         }
       },
       "storage": {
