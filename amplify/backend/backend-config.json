@@ -86,6 +86,11 @@
     "compositionDb": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
+    },
+    "imageS3bucket": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }

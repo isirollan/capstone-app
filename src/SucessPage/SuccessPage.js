@@ -31,10 +31,9 @@ const SuccesPage = () => {
                 <p>{savefabricResponse}</p>
             </div>
            
-            <div>
-                <button onClick={cameraClick}>Another Picture</button>
-                <br></br>
-                <button component={MuiButton} onClick={homeClick}>Return to Home</button>
+            <div className='button-container'>
+                <button className="button button-space" onClick={cameraClick}>Another Picture</button>
+                <button className="button" onClick={homeClick}>Return to Home</button>
             </div>
         </>
 

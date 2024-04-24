@@ -18,4 +18,44 @@
   url("https://db.onlinewebfonts.com/t/1130e1ae4e4a76c7118c0b35c4b9d019.svg#Inter")format("svg");
 }
 
+.button-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Align items vertically, can be removed if not needed */
+  flex-direction: row; /* Align items in a row */
+  gap: 10px; /* Optional: adds space between buttons */
+}
 
+.button {
+  background-color: #94493F;
+  border-radius: 5px;
+  padding: 5px;
+  font-family: 'Pitch-Regular';
+  color: white;
+  border-style: inherit;
+  text-align: center;
+  display: block;
+  margin: auto;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #592B26;
+}
+
+.button:disabled {
+  background-color: #CAA5A0;
+  color: #ecf0f1;
+  cursor: not-allowed;
+}
+
+.button-space {
+  margin-right: 20px; 
+  margin-bottom: 20px;
+}
+
+.fabric-list ul {
+  font-family: 'Inter', sans-serif;
+}

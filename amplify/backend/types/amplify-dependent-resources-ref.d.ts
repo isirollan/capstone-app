@@ -34,6 +34,10 @@ export type AmplifyDependentResourcesAttributes = {
       "PartitionKeyType": "string",
       "Region": "string",
       "StreamArn": "string"
+    },
+    "imageS3bucket": {
+      "BucketName": "string",
+      "Region": "string"
     }
   }
 }

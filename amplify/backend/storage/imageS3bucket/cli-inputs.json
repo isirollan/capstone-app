@@ -1,0 +1,12 @@
+{
+  "resourceName": "imageS3bucket",
+  "policyUUID": "a6109997",
+  "bucketName": "image-saver",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

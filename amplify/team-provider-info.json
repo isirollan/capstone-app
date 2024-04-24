@@ -22,7 +22,8 @@
         }
       },
       "storage": {
-        "compositionDb": {}
+        "compositionDb": {},
+        "imageS3bucket": {}
       },
       "api": {
         "compositionApi": {}

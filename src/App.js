@@ -12,9 +12,7 @@ import SuccesPage from './SucessPage/SuccessPage';
 import MainPage from './MainPage/MainPage';
 import Camera from './camera/camera';
 import Form from './Form/Form';
-//create a context to hold the refs
-//export const CameraContext = createContext();
-// establishing all the webpages to display
+import IntermediatePage from './loading-page/loading-page';
 
 //defining the theme (dark, light or custom)
 export const apiContext = createContext();
@@ -43,6 +41,7 @@ function App() {
             <Route path="/success" element={<SuccesPage/>}></Route>
             <Route path="/camera" element={<Camera/>}></Route>
             <Route path="/form" element={<Form/>}></Route>
+            <Route path="/loading" element={<IntermediatePage/>}></Route>
           </Routes>
         </Router>
       </ThemeProvider>
