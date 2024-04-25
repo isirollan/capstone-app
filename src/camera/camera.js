@@ -45,7 +45,7 @@ const Camera = () => {
 	// //Call API with the image key, retry once in case of time out
 	const sendPhotoToAPI = (imageKey, retryCount = 0) => {
 		// Sending photo calling the Sagemaker API
-		axios.post(`https://8o0bt3npya.execute-api.us-east-1.amazonaws.com/dev/image-process?lambda-image-storage=lambda-image-storage&image_key=8038.jpg`) //replace this to ${imageKey}
+		axios.post(`https://8o0bt3npya.execute-api.us-east-1.amazonaws.com/dev/image-process?lambda-image-storage=image-saver122039-dev&image_key=public/${imageKey}`) //replace this to ${imageKey}
 		.then(response => {
 			setmodelResponse(response.data)
 			setIsLoading(false); //stop loading
@@ -131,10 +131,10 @@ const Camera = () => {
 	}
 
 		// when the user click the button, send it to camera page and send the blob
-	const formClick = () => {
+	const formClick = async () => {
 		// Check if a photo has been taken before sending
 		if (hasPhoto && photoBlob) {
-			const imageKey = uploadPhotoToS3(photoBlob);
+			const imageKey = await uploadPhotoToS3(photoBlob);
 			// Call the function to send the photo blob to the API
 			if (imageKey) {
 				sendPhotoToAPI(imageKey);
