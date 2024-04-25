@@ -160,11 +160,12 @@ app.get(path + '/object' + hashKeyPath + sortKeyPath, async function(req, res) {
 
 app.put(path, async function(req, res) {
   // extract composition and sample_id from request body
-  const { composition, sample_id} = req.body;
+  const { composition, sample_id, imageKey} = req.body;
 
   //Instantiate the item object with values as 0
   const item = {
     sample_id,
+    imageKey,
     cotton: 0,
     polyester: 0,
     elastane: 0,
@@ -211,11 +212,12 @@ app.put(path, async function(req, res) {
 
 app.post(path, async function(req, res) {
   // extract composition and sample_id from request body
-  const { composition, sample_id} = req.body;
+  const { composition, sample_id, imageKey} = req.body;
 
   //Instantiate the item object with values as 0
   const item = {
     sample_id,
+    imageKey,
     cotton: 0,
     polyester: 0,
     elastane: 0,

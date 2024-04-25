@@ -9,7 +9,7 @@ import { uploadData } from "@aws-amplify/storage";
 // Changed from function Camera()
 const Camera = () => {
 	//global state
-	const {setmodelResponse} = useContext(apiContext);
+	const {setmodelResponse, setimageKey} = useContext(apiContext);
 	//local states
 	const [hasPhoto, setHasPhoto] = useState(false); 
 	const [photoBlob, setPhotoBlob] = useState(null); // State to store the photo blob
@@ -34,7 +34,7 @@ const Camera = () => {
 				// }
 			}).result;
 			console.log('Upload Success: ', result);
-			console.log(result.key);
+			setimageKey(result.key);
 			return result.key; 
 			// Return the key of the uploaded file
 		} catch(error) {

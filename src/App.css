@@ -51,11 +51,50 @@
   cursor: not-allowed;
 }
 
-.button-space {
-  margin-right: 20px; 
-  margin-bottom: 20px;
+
+.fabric-list {
+  font-family: 'Inter', sans-serif;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
-.fabric-list ul {
-  font-family: 'Inter', sans-serif;
+.success {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+h1 {
+  text-align: center;
+  margin: 2px;
+}
+
+h4 {
+  text-align: center;
+}
+
+.edit-container {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between; 
+}
+
+.edit-container label {
+  flex: 1 1 60%; /* Allocate 60% of the space to labels */
+  margin-right: 10px; /* Adds some spacing between the label and the input */
+}
+
+.edit-container input {
+  flex: 1 1 40%; /* Allocate 40% of the space to inputs */
+  border-radius: 5px;;
+  border-style: solid;
+  border-color: #592B26;
+  border-width: 1px;
+  margin-bottom: 2px; /* Spacing between inputs */
+  padding: 3px;
+  width: 30%; /* Full width of the parent container 50% 10px*/
+  box-sizing: border-box;
 }

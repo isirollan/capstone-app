@@ -13,27 +13,10 @@ function Form() {
   const [editComposition, setEditComposition] = useState([]);
   const successNavigate = useNavigate();
   const [totalPercentage, setTotalPercentage] = useState(0); //default state of percentages
-  const {modelResponse, setsavefabricResponse} = useContext(apiContext); // will save the answer of the second API to navigate to the next 
+  const {modelResponse, imageKey, setsavefabricResponse} = useContext(apiContext); // will save the answer of the second API to navigate to the next 
 
-  // useEffect(() => {
-  //   axios.get('http://localhost:3000/fabric')
-  //     .then(res => {
-  //       console.log("Received data:", res.data);  // Log the fetched data
-  //       setFabric(res.data);
-  //       const compositionArray = Object.entries(res.data.composition).map(([material, percentage]) => ({
-  //         materialName: material,
-  //         percentage
-  //     }));
-  //       setEditComposition(compositionArray);
-  //       //check total sum
-  //       const initialTotal = compositionArray.reduce((sum, item) => sum + parseFloat(item.percentage), 0);
-  //       setTotalPercentage(initialTotal);
-  //     })
-  //     .catch(err => {
-  //       console.error("Error fetching data:", err);
-  //     });
-  // }, []);
-
+  
+  // Get the answer of the model and render it 
   useEffect(() => {
     if (!modelResponse) return; // Ensure modelResponse is not null or undefined
   
@@ -48,7 +31,7 @@ function Form() {
   
     // Update the fabric state with the transformed data
     const updatedFabric = {
-      sample_id: parsedResponse.sample_id,
+      sample_id: parsedResponse.sample_id.split('.')[0], // Truncate anything after the decimal
       composition: transformedComposition
     };
   
@@ -68,12 +51,22 @@ function Form() {
   
   }, [modelResponse]);
 
+  // edit composition
   const handleCompositionChange = (index, field, value) => {
     const updatedComposition = [...editComposition];
     updatedComposition[index][field] = value;
     setEditComposition(updatedComposition);
 };
+
+  // edit sample_id
+  const handleSampleIdChange = (newSampleId) => {
+    setFabric(prevState => ({
+      ...prevState,
+      sample_id: newSampleId
+    }));
+  };
   
+  //save edits
   const saveEdits = () => {
     const newComposition = editComposition.reduce((acc, { materialName, percentage }) => {
         acc[materialName] = Number(percentage); // Ensure percentage is stored as a number
@@ -100,7 +93,11 @@ function Form() {
   const confirmComposition = async () => {
     //const saveEndpoint = amplifyconfiguration.AWS_REST_ENDPOINT + "/dev"
     try {
-        const response = await axios.post('https://okix74mu6c.execute-api.us-west-2.amazonaws.com/dev/savefabric', fabric);
+      const payload = {
+        ...fabric,
+        imageKey: imageKey //imported from camera
+      };
+        const response = await axios.post('https://okix74mu6c.execute-api.us-west-2.amazonaws.com/dev/savefabric', payload); // IF PAYLOAD DOESN'T WORK, GO BACK TO FABRIC
         if (response.data.success) {
           setsavefabricResponse(response.data.success);
           console.log(response.data)
@@ -135,38 +132,49 @@ function Form() {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
             <div>
                 <h1>Fabric Composition</h1>
-                <h5>{fabric.sample_id}</h5>
+                <h4>{fabric.sample_id}</h4>
                 {!isEditing ? (
                     <>
-                      <div className="fabric-list">
+                      <div className='fabric-list'>
                           <ul>
                               {editComposition.map(({ materialName, percentage }, index) => (
                                   <li key={index}>{materialName}: {percentage}%</li>
                               ))}
                           </ul>
-                        </div>
+                      </div>
                         <br></br>
-                        <div>Total Percentage: {totalPercentage.toFixed(2)}%</div> {/* Display the total percentage */}
+                        <div>Total Percentage: <strong>{totalPercentage.toFixed(2)}%</strong></div> {/* Display the total percentage */}
                         <div className='button-container'>
-                          <button className="button button-space" onClick={() => setIsEditing(true)}>Edit</button>
+                          <button className="button" onClick={() => setIsEditing(true)}>Edit</button>
                           <button className="button" onClick={confirmComposition} disabled={!checkCompositionSum()}>Confirm</button>
                         </div>
                     </>
                 ) : (
                     <>
-                        {editComposition.map(({ materialName, percentage }, index) => (
-                            <div key={index}>
-                                <input
-                                    type="text"
-                                    value={materialName}
-                                    onChange={(e) => handleCompositionChange(index, 'materialName', e.target.value)}
-                                />
-                                <input
-                                    type="number"
-                                    value={percentage}
-                                    onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
-                                />
-                            </div>
+                      <div className='edit-container'>
+                        <label>ID: </label>
+                        <input 
+                            type="text"
+                            value={fabric.sample_id}
+                            onChange={(e) => handleSampleIdChange(e.target.value)}
+                            placeholder="Edit Sample ID"
+                        />
+                      </div>
+
+                      {editComposition.map(({ materialName, percentage }, index) => (
+                          <div className= 'edit-container' key={index}>
+                              {/* <input
+                                  type="text"
+                                  value={materialName}
+                                  onChange={(e) => handleCompositionChange(index, 'materialName', e.target.value)}
+                              /> */}
+                              <label>{materialName}: </label>
+                              <input
+                                  type="number"
+                                  value={percentage}
+                                  onChange={(e) => handleCompositionChange(index, 'percentage', e.target.value)}
+                              />
+                          </div>
                         ))}
                         <div className='button-container'>
                           <button className="button" onClick={saveEdits}>Save Changes</button>

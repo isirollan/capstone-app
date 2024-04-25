@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import Header from '../Header/Header';
 import { apiContext } from '../App';
 import { useNavigate } from 'react-router';
-import { Button as MuiButton} from '@mui/material'
 
 const SuccesPage = () => {
     const {savefabricResponse} = useContext(apiContext);
@@ -26,13 +25,13 @@ const SuccesPage = () => {
         <>
             <Header/>
             <h2>Success!</h2>
-            <div>
+            <div className='success'>
                 <p>Write the ID if you haven't already</p>
                 <p>{savefabricResponse}</p>
             </div>
            
             <div className='button-container'>
-                <button className="button button-space" onClick={cameraClick}>Another Picture</button>
+                <button className="button" onClick={cameraClick}>Another Picture</button>
                 <button className="button" onClick={homeClick}>Return to Home</button>
             </div>
         </>
