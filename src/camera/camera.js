@@ -5,6 +5,8 @@ import Header from "../Header/Header";
 import axios from 'axios';
 import {  apiContext } from '../App';
 import { uploadData } from "@aws-amplify/storage";
+//import S3 bucket name
+import awsmobile from "../aws-exports";
 
 // Changed from function Camera()
 const Camera = () => {
@@ -44,8 +46,10 @@ const Camera = () => {
 
 	// //Call API with the image key, retry once in case of time out
 	const sendPhotoToAPI = (imageKey, retryCount = 0) => {
+		//getting the S3  bucket name
+		const bucketName = awsmobile.aws_user_files_s3_bucket
 		// Sending photo calling the Sagemaker API
-		axios.post(`https://8o0bt3npya.execute-api.us-east-1.amazonaws.com/dev/image-process?lambda-image-storage=image-saver122039-dev&image_key=public/${imageKey}`) //replace this to ${imageKey}
+		axios.post(`https://8o0bt3npya.execute-api.us-east-1.amazonaws.com/dev/image-process?lambda-image-storage=${bucketName}&image_key=public/${imageKey}`) 
 		.then(response => {
 			setmodelResponse(response.data)
 			setIsLoading(false); //stop loading
@@ -167,18 +171,24 @@ const Camera = () => {
 	return (
 		<>
 			<Header/>
-			<h2>Rotate your phone to take a picture</h2>
 			<div className="App">
 				<div className="camera">
-					<video ref={videoRef} autoPlay playsInline></video>
-					<button className="snap" onClick={takePhoto}>Snap!</button>
+					{ hasPhoto || (
+						<>
+							<h2>Rotate your phone to take a picture</h2>
+							<video ref={videoRef} autoPlay playsInline></video>
+							<button className="snap" onClick={takePhoto}>Snap!</button>
+						</>
+					)}
 				</div>
 				<div className={'result ' + (hasPhoto ? 'hasPhoto' : '')}>
 					<canvas ref={photoRef}></canvas>
-						<button className="snap" onClick={formClick}>Send</button>
-						<button className= "snap" onClick={retakePhoto}>Retake</button>
-						{/* Loader here: This will show when the API is being called */}
-						{/*{isLoading && <div className="loader"></div>}*/}
+					{hasPhoto && (
+						<div className="button-container">
+							<button className="snap" onClick={formClick}>Send</button>
+							<button className= "snap" onClick={retakePhoto}>Retake</button>
+						</div>
+					)}
 				</div>
 			</div>
 		</>

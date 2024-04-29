@@ -57,5 +57,4 @@ function App() {
 
 export default withAuthenticator(App);
 
-//is not compiling correctly when I add the camera, consider add useRef n here as a context> did that, but is still complaining about the rendering (might be a dependency with the original file)
 

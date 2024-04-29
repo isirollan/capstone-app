@@ -3,6 +3,8 @@ import Header from '../Header/Header';
 import axios from 'axios';
 import { apiContext } from '../App';
 import { useNavigate } from "react-router";
+//safely import the API 
+import awsmobile from '../aws-exports';
 
 
 
@@ -91,13 +93,14 @@ function Form() {
 
   //with AWS API
   const confirmComposition = async () => {
-    //const saveEndpoint = amplifyconfiguration.AWS_REST_ENDPOINT + "/dev"
+    //retrieve API link from aws-exports.js
+    const apiEndpoint =awsmobile.aws_cloud_logic_custom.find(service => service.name === "compositionApi").endpoint
     try {
       const payload = {
         ...fabric,
         imageKey: imageKey //imported from camera
       };
-        const response = await axios.post('https://okix74mu6c.execute-api.us-west-2.amazonaws.com/dev/savefabric', payload); // IF PAYLOAD DOESN'T WORK, GO BACK TO FABRIC
+        const response = await axios.post(`${apiEndpoint}/savefabric`, payload);
         if (response.data.success) {
           setsavefabricResponse(response.data.success);
           console.log(response.data)

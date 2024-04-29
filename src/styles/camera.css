@@ -8,6 +8,9 @@
   }
   
   .App {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     min-height: 100vh;
     position: relative;
     background-color: #ECECEA;;
@@ -18,12 +21,10 @@
   }
   
   .result {
-    /* position: fixed; */
     position: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    position: fixed;
+    justify-content: center;
     top: 0;
     left: 100%;
     width: 100%;
@@ -52,38 +53,40 @@
       appearance: none;
       border: none;
       outline: none;
+      flex: none;
 
       padding: 8px 16px;
       /* background-image: linear-gradient(to right, #844FFF 50%, #F44F84 50%); */
       background-color: #94493F ;
       border-radius: 5px;
       background-position: 0%;
-      background-size: 200%;
+      background-size: 100%;
       color: #FFF;
       font-size: 24px;
       font-weight: 700;
       transition: 0.4s;
       cursor: pointer;
   }
+
+  .button-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Align items vertically, can be removed if not needed */
+    flex-direction: row; /* Align items in a row */
+    gap: 10px; /* Optional: adds space between buttons */
+    margin-top: 20px;
+  }
   
   button.snap:hover {
       background-position: 100%;
   
   }
-/* 
-  button.snap:first-child {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-  }
 
-  button.snap:last-child {
-    position: absolute;
-    bottom: 20px;
-    left: 20px; 
+  /* Apply the flex container only when a photo is present */
+.result.hasPhoto .buttons-container {
+  display: flex;
+}
 
-  } */
-  
   canvas {
       width: 100%;
       height: auto;
@@ -93,6 +96,7 @@
     text-align: center;
     padding-left: 5%;
     padding-right: 5%;
+    padding-top: 5%;
   }
 
   .intermediate-page {

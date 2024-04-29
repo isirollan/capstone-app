@@ -20,7 +20,7 @@ function Header() {
                     <p className='logo'>r.</p>
                 </div>
                 <div className='right'>
-                <button className='signoutbutton' onClick={handleSignOut}>Sign Out</button>
+                  <button className='signoutbutton' onClick={handleSignOut}>Sign Out</button>
                 </div>
             </div>
 
