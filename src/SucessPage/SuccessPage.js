@@ -4,6 +4,7 @@ import { apiContext } from '../App';
 import { useNavigate } from 'react-router';
 
 const SuccesPage = () => {
+    // Getting the answer from previous API called in Form
     const {savefabricResponse} = useContext(apiContext);
 
 
@@ -35,12 +36,7 @@ const SuccesPage = () => {
                 <button className="button" onClick={homeClick}>Return to Home</button>
             </div>
         </>
-
     )
-
-
-
 }
-
 
 export default SuccesPage;

@@ -7,10 +7,12 @@ import {  apiContext } from '../App';
 import { uploadData } from "@aws-amplify/storage";
 //import S3 bucket name
 import awsmobile from "../aws-exports";
+//import Sagemaker API 
+import sagemakerApi from "../api-exports";
 
 // Changed from function Camera()
 const Camera = () => {
-	//global state
+	//global states
 	const {setmodelResponse, setimageKey} = useContext(apiContext);
 	//local states
 	const [hasPhoto, setHasPhoto] = useState(false); 
@@ -18,7 +20,7 @@ const Camera = () => {
 	const videoRef = useRef(null);
 	const photoRef = useRef(null);
 	const [isLoading, setIsLoading] = useState(false); // loader when the API is thinking
-	//creating function to navigate to camera
+	// navigate to other components
 	const navigate = useNavigate();
 	
 	
@@ -27,32 +29,37 @@ const Camera = () => {
 		setIsLoading(true) //Start loading
 		navigate('/loading') //navigate to the loading page
 		const uniqueName = `photo_${Date.now()}.jpg`; //Generate a unique name using the timestamp
+		// save image as a jpg and with the uniqueName as name
 		try {
 			const result = await uploadData({
 				key: uniqueName,
 				data: photoBlob,
-				// options: {
-				// 	accessLevel: 'protected' >> I left if public for easy access
-				// }
 			}).result;
 			console.log('Upload Success: ', result);
+			// saving imageKey for other components
 			setimageKey(result.key);
-			return result.key; 
 			// Return the key of the uploaded file
+			return result.key; 
+			
 		} catch(error) {
 			console.error('Error uploading file: ', error)
 		}
 	};
 
-	// //Call API with the image key, retry once in case of time out
+	//Call API with the image key and S3 bucket
 	const sendPhotoToAPI = (imageKey, retryCount = 0) => {
 		//getting the S3  bucket name
 		const bucketName = awsmobile.aws_user_files_s3_bucket
+		// API endpoint
+		const apiEndpoint = sagemakerApi.endpoint
 		// Sending photo calling the Sagemaker API
-		axios.post(`https://8o0bt3npya.execute-api.us-east-1.amazonaws.com/dev/image-process?lambda-image-storage=${bucketName}&image_key=public/${imageKey}`) 
+		axios.post(`${apiEndpoint}/image-process?lambda-image-storage=${bucketName}&image_key=public/${imageKey}`) 
 		.then(response => {
+			// set the response to the next component
 			setmodelResponse(response.data)
-			setIsLoading(false); //stop loading
+			//stop loading
+			setIsLoading(false); 
+			//navigate to next page
 			navigate("/form")
 			console.log('Response: ', response.data)
 		})
@@ -64,7 +71,9 @@ const Camera = () => {
 				sendPhotoToAPI(imageKey, retryCount + 1); // Retry the function
 			} else {
 				setIsLoading(false); //stop loading
-				alert('Failed to process the photo after retrying. Please try again later.') //notify user
+				//go back to camera
+				navigate("/camera")
+				alert('Failed to process the photo after retrying. Please try again.') //notify user
 			}
 		});
 	}
@@ -107,10 +116,7 @@ const Camera = () => {
 	
 			photo.width = displayWidth;
 			photo.height = displayHeight;
-			// photo.width = displayWidth * pixelRatio;
-			// photo.height = displayHeight * pixelRatio;
 	
-			// ctx.scale(pixelRatio, pixelRatio);
 			ctx.drawImage(video, 0, 0, photo.width, photo.height);
 			setHasPhoto(true);
 
@@ -124,7 +130,7 @@ const Camera = () => {
 
 
 
-	
+	//  When user clicks "retake"
 	const retakePhoto = () => {
 		let photo = photoRef.current;
 		let ctx = photo.getContext('2d');
@@ -134,7 +140,7 @@ const Camera = () => {
 		setHasPhoto(false);	
 	}
 
-		// when the user click the button, send it to camera page and send the blob
+		// when the user click "send", save image blob in S3 and call API with the image key
 	const formClick = async () => {
 		// Check if a photo has been taken before sending
 		if (hasPhoto && photoBlob) {
@@ -142,8 +148,6 @@ const Camera = () => {
 			// Call the function to send the photo blob to the API
 			if (imageKey) {
 				sendPhotoToAPI(imageKey);
-				// Navigate to the form page
-				//formNavigate("/form");
 			}
 
 			

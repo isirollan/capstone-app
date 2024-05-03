@@ -26,6 +26,9 @@
   font-family: 'Pitch-Regular';
   background-color: #ECECEA;
   padding: 5px, 2px, 2px, 5px;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
 }
 
 .right {

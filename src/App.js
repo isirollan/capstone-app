@@ -26,7 +26,7 @@ const theme = createTheme({
 //all the components that are within ThemeProvider will inherit the component from the theme provider (if we don't have css for each one)
 
 function App() {
-
+  //global states
   const [savefabricResponse, setsavefabricResponse] = useState([])
   const [modelResponse, setmodelResponse] = useState([]);
   const [imageKey, setimageKey] = useState([])

@@ -3,19 +3,25 @@ import Header from '../Header/Header';
 import axios from 'axios';
 import { apiContext } from '../App';
 import { useNavigate } from "react-router";
-//safely import the API 
+//import DynamoDB API
 import awsmobile from '../aws-exports';
 
 
 
 function Form() {
 
-  const [fabric, setFabric] = useState({ composition: {}, sample_id: "" }); // remove name:"" which seems unnecessary
+  //Initial state for the Model answer structure
+  const [fabric, setFabric] = useState({ composition: {}, sample_id: "" }); 
+  // Edit state
   const [isEditing, setIsEditing] = useState(false);
+  // save edits
   const [editComposition, setEditComposition] = useState([]);
+  //navigate to the next page
   const successNavigate = useNavigate();
-  const [totalPercentage, setTotalPercentage] = useState(0); //default state of percentages
-  const {modelResponse, imageKey, setsavefabricResponse} = useContext(apiContext); // will save the answer of the second API to navigate to the next 
+   //default state of percentages
+  const [totalPercentage, setTotalPercentage] = useState(0);
+  // Global context from "camera" components and a context to be sent to the next page
+  const {modelResponse, imageKey, setsavefabricResponse} = useContext(apiContext); 
 
   
   // Get the answer of the model and render it 
@@ -77,23 +83,10 @@ function Form() {
     setFabric(prevState => ({ ...prevState, composition: newComposition }));
     setIsEditing(false);
 };
-  
-  //with LOCAL API
-  // const confirmComposition = async() => {
-  //   try { 
-  //     const response = await axios.post('http://localhost:3000/confirm-fabric', fabric);
-  //     setsavefabricResponse(response.data);
-  //     successNavigate('/success');
 
-  //   } catch (error) {
-  //     console.error("Error posting data:", error);
-  //   }
-  // };
-
-
-  //with AWS API
+  //Save composition in database
   const confirmComposition = async () => {
-    //retrieve API link from aws-exports.js
+    //retrieve API
     const apiEndpoint =awsmobile.aws_cloud_logic_custom.find(service => service.name === "compositionApi").endpoint
     try {
       const payload = {

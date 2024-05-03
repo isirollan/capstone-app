@@ -1,6 +1,8 @@
 import React from 'react';
 import '../styles/camera.css';
 import Header from '../Header/Header';
+
+//Simple function that opens when "setisloading" is true
 function IntermediatePage() {
     return (
         <>

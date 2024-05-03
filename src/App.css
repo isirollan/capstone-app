@@ -18,6 +18,18 @@
   url("https://db.onlinewebfonts.com/t/1130e1ae4e4a76c7118c0b35c4b9d019.svg#Inter")format("svg");
 }
 
+
+/* General CSS */
+h1 {
+  text-align: center;
+  margin: 2px;
+}
+
+h4 {
+  text-align: center;
+}
+
+/* Button css */
 .button-container {
   display: flex;
   justify-content: center; /* Center horizontally */
@@ -39,6 +51,7 @@
   margin: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-size: 20px;
 }
 
 .button:hover {
@@ -51,7 +64,7 @@
   cursor: not-allowed;
 }
 
-
+/* Form css */
 .fabric-list ul {
   font-family: 'Inter', sans-serif;
   padding-left: 10%;
@@ -63,15 +76,8 @@
   padding-right: 10%;
 }
 
-h1 {
-  text-align: center;
-  margin: 2px;
-}
 
-h4 {
-  text-align: center;
-}
-
+/* Edit form css */
 .edit-container {
   max-width: 90%;
   margin: 0 auto;
