@@ -24,6 +24,7 @@ yarn-error.log*
 
 #external API
 api-exports.js
+.env
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

@@ -7,8 +7,6 @@ import {  apiContext } from '../App';
 import { uploadData } from "@aws-amplify/storage";
 //import S3 bucket name
 import awsmobile from "../aws-exports";
-//import Sagemaker API 
-import sagemakerApi from "../api-exports";
 
 // Changed from function Camera()
 const Camera = () => {
@@ -51,7 +49,7 @@ const Camera = () => {
 		//getting the S3  bucket name
 		const bucketName = awsmobile.aws_user_files_s3_bucket
 		// API endpoint
-		const apiEndpoint = sagemakerApi.endpoint
+		const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
 		// Sending photo calling the Sagemaker API
 		axios.post(`${apiEndpoint}/image-process?lambda-image-storage=${bucketName}&image_key=public/${imageKey}`) 
 		.then(response => {
