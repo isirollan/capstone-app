@@ -7,7 +7,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 
-
+//import DynamoDB
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DeleteCommand, DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, ScanCommand } = require('@aws-sdk/lib-dynamodb');
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
@@ -22,13 +22,13 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
 }
 
-const userIdPresent = false; // TODO: update in case is required to use that definition
-const partitionKeyName = "sample_id";
-const partitionKeyType = "S";
+const userIdPresent = false; // update in case is required to use that definition
+const partitionKeyName = "sample_id"; //primary key name
+const partitionKeyType = "S"; // primary key type
 const sortKeyName = "";
 const sortKeyType = "";
 const hasSortKey = sortKeyName !== "";
-const path = "/savefabric";
+const path = "/savefabric"; // API path
 const UNAUTH = 'UNAUTH';
 const hashKeyPath = '/:' + partitionKeyName;
 const sortKeyPath = hasSortKey ? '/:' + sortKeyName : '';

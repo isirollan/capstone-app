@@ -1,82 +1,70 @@
 # Refiberd Tag Reader
+## Capstone Final Project, Spring 2024
+### University of California, Berkeley. School of Information
 
-## To run this in your local computer
+**Team Members**
+- Abdullah Azhar
+- Erin Jones
+- Mustafa Hameed
+- Isidora Rollán
+- Prashant Sharma
 
-Once you are in the correct folder (capstone-app2), run `npm start`
+<hr>
 
-- If you want to run it with the local API to try the experience
-1. Open a separate terminal, and open fabric-api folder
-2. Run `node server.js` on the terminal
-3. In another terminal in capstone-app2 folder, `run npm start`
-4. Answer `Y`to the question.
+## How to run this project in your local computer
 
-# Getting Started with Create React App
+Once you are in the correct folder (capstone-app2), run `amplify init`
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- The owner of this project will need to give you the IAM username and password related to this project.
+- After that run in the root folder `amplify push`, this will udpate all the configurations that aren't present in the code repo.
 
-## Available Scripts
 
-In the project directory, you can run:
+# Composition of this Project
 
-### `npm start`
+This project represents a simple solution to solve a problem for a start up called [Refiberd](https://refiberd.com/). This product has the objective of identifying the composition of a fabric by taking a picture of the tag description.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This project has two main parts.
+1. The Web Application
+2. The Model
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Web Application
 
-### `npm test`
+This section is devoted to explain the structure of this repository and what is the objective of each relevant file.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. src folder
 
-### `npm run build`
+This folder has the front end components of our web application
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Header:** header of the webpage that has a the logo and a sign out button. When the user press the logo, goes back to Main page.
+- **Maing Page:** homepage of the web application. Has a button that goes to the next component
+- **Camera:** component that opens the camera of the device. If it is a phone will open the back camera and if it is a computer it will open the front camera. 
+    - After the picture is taken and the user clicks `Send` this code calls the backend by uploading the photo in the S3 bucket.
+    - When the S3 answer with the image Key, the fron then calls the API that retrieves the picture from the S3 bucket and send it to the Machine Learning model.
+- **Loading Page:** the ML models takes a few seconds to respond. For that matter, we created a loader so the user knows that the web application is working.
+- **Form:** With the model answer, this components renders the output so it can be easily seen by the user
+    - It has the main result with a "Total Percentage" validation that will not allow the user to continue if the sum of the compositions does not sum 100.
+    - If the model prediction is incorrect or incomplete, the user can `edit` and add manually the distribution.
+    - Once the user clicks `Confirm` the form calls the API that connects with the database (DynamoDB) of this project.
+- **Success Page:** Very simple page that retrieves the ID of the tag if necessary and has the objective to signal the user that everything is saved.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **styles:** Css styles specific for some of the components.
+- **App.js** has the maind theme and renders all the previous components. It also has the global variables (`createContext`) necessary to navigate between components. It also has Amazon Cognito. The users cannot use this web application unless they are authenticated (this also counts in the local version).
+- **Index.js:** has some extra coding to configure amplify in the React.js code.
+- **ui-components:** unused functionality that creates components from the Figma created according to Amplify baseline.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. amplify folder
 
-### `npm run eject`
+Most of the content of this folder is generated automatically when interacting with Amplify through the console. The main code and manual variations are made in the `backend` folder.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Api/compositionApi** has the path of the API Rest to call save the new information in the database.
+- **auth** has the default code for the authentication setup.
+- **function/compositionFunction** has the Lambda (serverless computer) that manages all the logic of the API and send and retrieve information from the DynamoDB.
+    - The main code is present in `app.js`, where all the amplify+DynamoDB packages are set.
+    - THe `GET` and `DELETE` code is the one created by Amplify by default when configuring from the console (adding an API, adding a Lambda Trigger, creating and connecting a DynamoDB)
+    - In the `POST` and `PUT` code is where we change the default code so it identify the JSON send through the API from the front, sets 0 as the default values for each fabric and then updates with the information received from the JSON. It also has a validator to make sure that the sum of the % is equal to 100.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **storage** has the basic configuration of the database (dynamoDB) and the Folder (S3 bucket).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## The Model
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+To know more about the model, open this [Repository](www.github.com)
