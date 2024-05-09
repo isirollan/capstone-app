@@ -82,8 +82,8 @@ const Camera = () => {
 	const getVideo = () => {
 		const constraints = {
 			video: {
-				width: { min: 640, ideal: 1280, max: 1920 },
-				height: { min: 480, ideal: 720, max: 1080 },
+				width: { min: 480, ideal: 640, max: 1280 },
+				height: { min: 360, ideal: 480, max: 720 },
 				focusMode: {ideal: 'continuous'}, // keep adjusting focus automatically
 				facingMode: { ideal: 'environment'} //prefer back camera  
 			}
@@ -131,11 +131,8 @@ const Camera = () => {
 			let ctx = photo.getContext('2d');
 
 	
-			//const displayWidth = photo.offsetWidth;
-			const displayWidth =   video.videoWidth //this increases the quality
-			//const displayHeight = displayWidth / (16/9);
-			const displayHeight = video.videoHeight // //this increases the quality
-			// const pixelRatio = window.devicePixelRatio || 1;
+			const displayWidth =   video.videoWidth
+			const displayHeight = video.videoHeight
 	
 			photo.width = displayWidth;
 			photo.height = displayHeight;
