@@ -82,22 +82,47 @@ const Camera = () => {
 	const getVideo = () => {
 		const constraints = {
 			video: {
-				facingMode: { ideal: 'environment'} //prefer back camera
+				width : {ideal:1920}, //ideal width
+				height: {ideal: 1080}, //ideal height
+				focusMode: {ideal: 'continuous'}, // keep adjusting focus automatically
+				facingMode: { ideal: 'environment'} //prefer back camera  
 			}
 		};
 
 		navigator.mediaDevices.getUserMedia(constraints).then (
 			stream => {
 				let video = videoRef.current;
-				video.srcObject = stream;
-				video.onloadedmetadata = () => {
-					video.play();
-				};	
+				if (video) {
+					video.srcObject = stream;
+					video.onloadedmetadata = () => {
+						video.play();
+					};
+				}
 			})
 			.catch (err => {
-			console.error(err);
+			console.error("Error accessing the camera", err);
 		});
 	}
+	// Ensure that during the process preserves quality
+	const sharpen = (ctx, width, height, mix = 0.5) => {
+		const imageData = ctx.getImageData(0, 0, width, height);
+		const data = imageData.data;
+		for (let i = 1; i < height - 1; i++) {
+			for (let j = 1; j < width - 1; j++) {
+				const idx = (i * width + j) * 4;
+				for (let channel = 0; channel < 3; channel++) {
+					let laplacian =
+						data[idx + channel - 4 * width] + // pixel above
+						data[idx + channel + 4 * width] + // pixel below
+						data[idx + channel - 4] + // pixel left
+						data[idx + channel + 4] - // pixel right
+						4 * data[idx + channel];
+					data[idx + channel] -= laplacian * mix;
+				}
+			}
+		}
+		ctx.putImageData(imageData, 0, 0);
+	};
 
 	// Take photo
 	const takePhoto = () => {
@@ -107,15 +132,16 @@ const Camera = () => {
 
 	
 			//const displayWidth = photo.offsetWidth;
-			const displayWidth =   video.videoWidth*2 //this increases the quality
+			const displayWidth =   video.videoWidth //this increases the quality
 			//const displayHeight = displayWidth / (16/9);
-			const displayHeight = video.videoHeight*2 // //this increases the quality
+			const displayHeight = video.videoHeight // //this increases the quality
 			// const pixelRatio = window.devicePixelRatio || 1;
 	
 			photo.width = displayWidth;
 			photo.height = displayHeight;
 	
 			ctx.drawImage(video, 0, 0, photo.width, photo.height);
+			sharpen(ctx, photo.width, photo.height);
 			setHasPhoto(true);
 
 			//Convert the canvas content to a blob
@@ -130,13 +156,21 @@ const Camera = () => {
 
 	//  When user clicks "retake"
 	const retakePhoto = () => {
-		let photo = photoRef.current;
-		let ctx = photo.getContext('2d');
 
-		ctx.clearRect(0, 0, photo.width, photo.height);
+		//Clear the canvas
+		if (photoRef.current) {
+			const ctx = photoRef.current.getContext('2d');
+			ctx.clearRect(0,0, photoRef.current.width, photoRef.currentheight);
+			photoRef.current.width = 0; //Reset canvas size to clear it fully
+			photoRef.current.height = 0;
+		}
 
+		//Reset state
 		setHasPhoto(false);	
-	}
+		setPhotoBlob(null);
+		// Restart the video stream
+		getVideo()
+	};
 
 		// when the user click "send", save image blob in S3 and call API with the image key
 	const formClick = async () => {
@@ -175,7 +209,7 @@ const Camera = () => {
 			<Header/>
 			<div className="App">
 				<div className="camera">
-					{ hasPhoto || (
+					{ !hasPhoto && (
 						<>
 							<h2>Rotate your phone to take a picture</h2>
 							<video ref={videoRef} autoPlay playsInline></video>
