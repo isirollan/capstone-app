@@ -125,7 +125,7 @@ const Camera = () => {
 	};
 
 	// Take photo
-	const takePhoto = () => {
+	const takePhoto = async () => {
 			let video = videoRef.current;
 			let photo = photoRef.current;
 			let ctx = photo.getContext('2d');
@@ -142,14 +142,25 @@ const Camera = () => {
 	
 			ctx.drawImage(video, 0, 0, photo.width, photo.height);
 			sharpen(ctx, photo.width, photo.height);
-			setHasPhoto(true);
-
-			//Convert the canvas content to a blob
-			photo.toBlob((blob) => {
+			try {
+				// Convert the canvas content to a blob with higher quality setting
+				const blob = await new Promise((resolve, reject) => {
+					photo.toBlob((blob) => {
+						if (blob) {
+							resolve(blob);
+						} else {
+							reject(new Error('Failed to convert canvas to blob.'));
+						}
+					}, 'image/jpeg', 0.95); // High quality
+				});
+		
 				// Set the Photo blob in state
 				setPhotoBlob(blob);
-			}, 'image/jpg');
-
+				setHasPhoto(true);
+			} catch (error) {
+				console.error("Error creating image blob:", error);
+				alert('Failed to capture photo. Please try again.');
+			}
 		}
 
 
