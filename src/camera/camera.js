@@ -82,6 +82,8 @@ const Camera = () => {
 	const getVideo = () => {
 		const constraints = {
 			video: {
+				width: { min: 640, ideal: 1280, max: 1920 },
+				height: { min: 480, ideal: 720, max: 1080 },
 				focusMode: {ideal: 'continuous'}, // keep adjusting focus automatically
 				facingMode: { ideal: 'environment'} //prefer back camera  
 			}
@@ -101,26 +103,26 @@ const Camera = () => {
 			console.error("Error accessing the camera", err);
 		});
 	}
-	// Ensure that during the process preserves quality
-	const sharpen = (ctx, width, height, mix = 0.5) => {
-		const imageData = ctx.getImageData(0, 0, width, height);
-		const data = imageData.data;
-		for (let i = 1; i < height - 1; i++) {
-			for (let j = 1; j < width - 1; j++) {
-				const idx = (i * width + j) * 4;
-				for (let channel = 0; channel < 3; channel++) {
-					let laplacian =
-						data[idx + channel - 4 * width] + // pixel above
-						data[idx + channel + 4 * width] + // pixel below
-						data[idx + channel - 4] + // pixel left
-						data[idx + channel + 4] - // pixel right
-						4 * data[idx + channel];
-					data[idx + channel] -= laplacian * mix;
-				}
-			}
-		}
-		ctx.putImageData(imageData, 0, 0);
-	};
+	// // Ensure that during the process preserves quality
+	// const sharpen = (ctx, width, height, mix = 0.5) => {
+	// 	const imageData = ctx.getImageData(0, 0, width, height);
+	// 	const data = imageData.data;
+	// 	for (let i = 1; i < height - 1; i++) {
+	// 		for (let j = 1; j < width - 1; j++) {
+	// 			const idx = (i * width + j) * 4;
+	// 			for (let channel = 0; channel < 3; channel++) {
+	// 				let laplacian =
+	// 					data[idx + channel - 4 * width] + // pixel above
+	// 					data[idx + channel + 4 * width] + // pixel below
+	// 					data[idx + channel - 4] + // pixel left
+	// 					data[idx + channel + 4] - // pixel right
+	// 					4 * data[idx + channel];
+	// 				data[idx + channel] -= laplacian * mix;
+	// 			}
+	// 		}
+	// 	}
+	// 	ctx.putImageData(imageData, 0, 0);
+	// };
 
 	// Take photo
 	const takePhoto = async () => {
@@ -139,7 +141,7 @@ const Camera = () => {
 			photo.height = displayHeight;
 	
 			ctx.drawImage(video, 0, 0, photo.width, photo.height);
-			sharpen(ctx, photo.width, photo.height);
+			// sharpen(ctx, photo.width, photo.height);
 			try {
 				// Convert the canvas content to a blob with higher quality setting
 				const blob = await new Promise((resolve, reject) => {
