@@ -41,6 +41,7 @@ const Camera = () => {
 			
 		} catch(error) {
 			console.error('Error uploading file: ', error)
+			alert(error)
 		}
 	};
 

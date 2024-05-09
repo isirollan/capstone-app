@@ -214,6 +214,25 @@ app.post(path, async function(req, res) {
   // extract composition and sample_id from request body
   const { composition, sample_id, imageKey} = req.body;
 
+  // Check if the sample_id is already present
+  const existingItemCheck = {
+    TableName: tableName,
+    Key: {
+      sample_id: sample_id
+    }
+  };
+
+  try {
+    const existingItem = await ddbDocClient.send(new GetCommand(existingItemCheck));
+    if (existingItem.Item) {
+      res.status(400).json({ error: `The ${sample_id} is already present in the database`});
+      return;
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Error checking for existing sample_id: ' + err.message });
+    return;
+  }
+
   //Instantiate the item object with values as 0
   const item = {
     sample_id,
@@ -258,6 +277,7 @@ app.post(path, async function(req, res) {
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
+
 
   let putItemParams = {
     TableName: tableName,
