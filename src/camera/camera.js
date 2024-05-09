@@ -82,8 +82,6 @@ const Camera = () => {
 	const getVideo = () => {
 		const constraints = {
 			video: {
-				width : {ideal:1920}, //ideal width
-				height: {ideal: 1080}, //ideal height
 				focusMode: {ideal: 'continuous'}, // keep adjusting focus automatically
 				facingMode: { ideal: 'environment'} //prefer back camera  
 			}
